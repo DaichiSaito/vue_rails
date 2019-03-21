@@ -19,7 +19,7 @@
                     <v-container fill-height fluid>
                         <v-layout fill-height>
                             <v-flex xs12 align-end flexbox>
-                                <span class="headline">Top 10 Australian beaches</span>
+                                <span class="headline">{{ user.name }}</span>
                             </v-flex>
                         </v-layout>
                     </v-container>
@@ -47,11 +47,11 @@
             return {
                 newTask: null,
                 tasks: [],
-                users: [{},{},{},{},{},{},{},{},{},{}]
+                users: []
             }
         },
         mounted() {
-            this.fetch()
+            this.fetchUser()
         },
         methods: {
             fetch() {
@@ -60,6 +60,15 @@
                     console.log(response.data.tasks)
                     response.data.tasks.forEach (task => {
                         this.tasks.unshift(task)
+                    })
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
+            fetchUser() {
+                axios.get('/api/v1/users').then(response => {
+                    response.data.users.forEach (user => {
+                        this.users.unshift(user)
                     })
                 }).catch(error => {
                     console.log(error)
