@@ -7,7 +7,7 @@
 
 <script>
     import axios from 'axios'
-    import LoginForm from '../../components/molecules/LoginForm.vue'
+    import LoginForm from '@/components/molecules/LoginForm.vue'
     import firebase from 'firebase'
     export default {
         name: 'LoginView',

@@ -60,16 +60,21 @@
         </v-fade-transition>
       </v-container>
     </v-content>
+    <Tab/>
   </v-app>
 </template>
 
 <script>
+    import Tab from './packs/components/molecules/Tab'
     export default {
         name: "app",
         data() {
             return {
                 navBar: false
             }
+        },
+        components: {
+            Tab
         }
     };
 </script>
