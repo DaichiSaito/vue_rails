@@ -4,10 +4,12 @@
   "dependencies": {
     "@rails/webpacker": "^4.0.2",
     "axios": "^0.18.0",
+    "firebase": "^5.9.0",
     "vue": "^2.6.10",
     "vue-loader": "^15.7.0",
     "vue-router": "^3.0.2",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "vuetify": "^1.5.7"
   },
   "devDependencies": {
     "webpack-dev-server": "^3.2.1"
