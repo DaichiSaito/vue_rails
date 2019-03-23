@@ -38,6 +38,7 @@ gem 'foreman'
 gem 'jwt'
 gem 'seed-fu', '~> 2.3'
 gem 'faker'
+gem 'fast_jsonapi'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false

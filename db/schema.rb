@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_21_064553) do
+ActiveRecord::Schema.define(version: 2019_03_21_142304) do
 
   create_table "authentications", force: :cascade do |t|
     t.integer "user_id"
@@ -19,6 +19,16 @@ ActiveRecord::Schema.define(version: 2019_03_21_064553) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_authentications_on_user_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.integer "from_id", null: false
+    t.integer "to_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["from_id", "to_id"], name: "index_likes_on_from_id_and_to_id", unique: true
+    t.index ["from_id"], name: "index_likes_on_from_id"
+    t.index ["to_id"], name: "index_likes_on_to_id"
   end
 
   create_table "tasks", force: :cascade do |t|
