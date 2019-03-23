@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   get '/about', to: 'home#index'
   get '/contact', to: 'home#index'
   get '/login', to: 'home#index'
+  get '/login_development', to: 'home#index'
+  get '/login_as/:user_id', to: 'development/sessions#login_as'
   namespace :api, format: 'json' do
     namespace :v1 do
       resources :likes, only: [:create]
