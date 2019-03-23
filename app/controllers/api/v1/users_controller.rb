@@ -16,4 +16,8 @@ class Api::V1::UsersController < ApplicationController
   def be_liked_users
 
   end
+
+  def matching_users
+    # current_user.matching_users
+  end
 end

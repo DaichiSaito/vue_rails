@@ -6,12 +6,14 @@ Rails.application.routes.draw do
   get '/login', to: 'home#index'
   get '/login_development', to: 'home#index'
   get '/login_as/:user_id', to: 'development/sessions#login_as'
+  get '/chatrooms', to: 'home#index'
   namespace :api, format: 'json' do
     namespace :v1 do
       resources :likes, only: [:create]
+      resources :chatrooms, only: [:index]
       resources :users, only: [:index] do
         collection do
-          get :like_users, :be_liked_users
+          get :like_users, :be_liked_users, :matching_users
         end
       end
       resources :tasks, only: [:index, :create, :update]

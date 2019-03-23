@@ -9,6 +9,7 @@
             <!--</li>-->
         <!--</ul>-->
     <!--</div>-->
+    <div>
     <v-layout row wrap>
         <v-flex  pa-1 xs12 sm6 md4 v-for="(user, index) in users" v-bind:id="'user_' + user.id" :key="user.id">
             <v-card>
@@ -39,9 +40,12 @@
             </v-card>
         </v-flex>
     </v-layout>
+        <Dialog v-bind:matching-user="matchingUser" v-on:close="closeModal()"/>
+    </div>
 </template>
 <script>
     import axios from 'axios'
+    import Dialog from '@/components/organisms/Dialog.vue'
     // import 'profile-placeholder.png'
     export default {
         data() {
@@ -50,8 +54,12 @@
                 tasks: [],
                 users: [],
                 // liking: false,
-                like_users: []
+                like_users: [],
+                matchingUser: null
             }
+        },
+        components: {
+            Dialog
         },
         mounted() {
             this.fetchLikeUser()
@@ -128,13 +136,17 @@
                             "Bearer " + localStorage.getItem('accesstoken')
                     }
                     }).then(response => {
-                        console.log(response)
                         this.like_users.push(response.data.data.id)
+                    console.log(response.data.data)
+                        this.matchingUser = response.data.data
 
                 }, (error) => {
                     console.log(error);
                 });
             },
+            closeModal() {
+                this.matchingUser = null
+            }
         }
     }
 </script>
