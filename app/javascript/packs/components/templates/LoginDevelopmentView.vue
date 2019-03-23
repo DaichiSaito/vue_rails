@@ -27,6 +27,7 @@
             login () {
                 axios
                     .get("/login_as/" + this.userId).then(response => {
+                    localStorage.setItem('currentUser', JSON.stringify(response.data.user));
                     localStorage.setItem('accesstoken', response.data.token);
                     this.$router.push({ path: '/' })
                 })

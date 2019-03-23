@@ -10,11 +10,14 @@ class Api::V1::LikesController < ApplicationController
       Chatroom.start_chat([current_user, @user])
       # マッチングが成立したというメール
       # UserMailer.with(user: @user, from_user: current_user).matching.deliver_later if @user.mail_receive?
+      render json: @user, meta: { matching: true }, adapter: :json
     else
       # いいねが届きましたというメール
       # UserMailer.with(user: @user, from_user: current_user).like.deliver_later if @user.mail_receive?
+      render json: @user, adapter: :json
     end
 
-    render json: UserSerializer.new(@user)
+    # render json: UserSerializer.new(@user)
+
   end
 end

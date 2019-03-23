@@ -6,45 +6,26 @@
         <v-list subheader>
           <v-subheader>Recent chat</v-subheader>
           <v-list-tile
-                  v-for="item in items"
-                  :key="item.title"
+                  v-for="chatroom in chatrooms"
+                  :key="chatroom.id"
                   avatar
                   @click=""
           >
             <v-list-tile-avatar>
-              <img :src="item.avatar">
+              <img :src="chatroom.avatar ? chatorom.avatar : 'https://cdn.vuetifyjs.com/images/lists/3.jpg'">
             </v-list-tile-avatar>
 
             <v-list-tile-content>
-              <v-list-tile-title v-html="item.title"></v-list-tile-title>
+              <v-list-tile-title v-html="chatroom_member_other_than_me(chatroom)"></v-list-tile-title>
             </v-list-tile-content>
 
             <v-list-tile-action>
-              <v-icon :color="item.active ? 'teal' : 'grey'">chat_bubble</v-icon>
+              <v-icon :color="chatroom.active ? 'teal' : 'grey'">chat_bubble</v-icon>
             </v-list-tile-action>
           </v-list-tile>
         </v-list>
 
         <v-divider></v-divider>
-
-        <v-list subheader>
-          <v-subheader>Previous chats</v-subheader>
-
-          <v-list-tile
-                  v-for="item in items2"
-                  :key="item.title"
-                  avatar
-                  @click=""
-          >
-            <v-list-tile-avatar>
-              <img :src="item.avatar">
-            </v-list-tile-avatar>
-
-            <v-list-tile-content>
-              <v-list-tile-title v-html="item.title"></v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
       </v-card>
     </v-flex>
   </v-layout>
@@ -55,6 +36,7 @@
     export default {
         mounted() {
           this.fetchChatrooms()
+            console.log(JSON.parse(localStorage.getItem('currentUser')))
         },
         data () {
             return {
@@ -67,7 +49,16 @@
                 ],
                 items2: [
                     { title: 'Travis Howard', avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg' }
-                ]
+                ],
+                chat_targets: []
+            }
+        },
+        computed: {
+            chatroom_member_other_than_me: function() {
+                self = this
+                return function(chatroom) {
+                    return chatroom.users.filter(user => user.id != JSON.parse(localStorage.getItem('currentUser')).id).map(user => user.name).join(',')
+                }
             }
         },
         methods: {
@@ -79,20 +70,10 @@
                     }
                 }).then(response => {
                     console.log(response)
-                    response.data.data.forEach(chatroom => {
+                    response.data.chatrooms.forEach(chatroom => {
                       console.log(chatroom)
-                        console.log(chatroom.id)
-                        console.log(chatroom.relationships.users.data)
-                        console.log()
+                      this.chatrooms.push(chatroom)
                     })
-                    // const chatroom = {
-                    //     id: response.data.
-                    // }
-                    // response.data.data.forEach(like_user => {
-                    //     console.log(like_user.id.toString())
-                    //     const id = like_user.id.toString()
-                    //     this.like_users.push(like_user.id)
-                    // })
                 })
             }
         }

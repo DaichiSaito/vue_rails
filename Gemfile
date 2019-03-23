@@ -38,7 +38,9 @@ gem 'foreman'
 gem 'jwt'
 gem 'seed-fu', '~> 2.3'
 gem 'faker'
-gem 'fast_jsonapi'
+# gem 'fast_jsonapi'
+gem 'active_model_serializers', '~> 0.10.0'
+gem 'will_paginate'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false

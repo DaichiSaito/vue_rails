@@ -11,7 +11,7 @@
                         class="headline grey lighten-2"
                         primary-title
                 >
-                    {{ matchingUser.attributes.name }}
+                    {{ matchingUser.name }}
                 </v-card-title>
 
                 <v-card-text>

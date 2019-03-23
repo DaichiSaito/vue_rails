@@ -20,7 +20,7 @@
                     <v-container fill-height fluid>
                         <v-layout fill-height>
                             <v-flex xs12 align-end flexbox>
-                                <span class="headline">{{ user.attributes.name }}</span>
+                                <span class="headline">{{ user.name }}</span>
                             </v-flex>
                         </v-layout>
                     </v-container>
@@ -93,7 +93,7 @@
                     }
                 }).then(response => {
                     console.log(response)
-                    response.data.data.forEach(like_user => {
+                    response.data.users.forEach(like_user => {
                         console.log(like_user.id.toString())
                         const id = like_user.id.toString()
                         this.like_users.push(like_user.id)
@@ -105,10 +105,11 @@
             },
             fetchUser() {
                 axios.get('/api/v1/users').then(response => {
-                    // console.log(response)
-                    response.data.data.forEach (user => {
+                    console.log(response)
+                    response.data.users.forEach (user => {
                         // console.log(user)
                         // this.like_users[user.id.toString()] = false
+                        console.log(user.id)
                         this.users.unshift(user)
 
 
@@ -136,9 +137,12 @@
                             "Bearer " + localStorage.getItem('accesstoken')
                     }
                     }).then(response => {
-                        this.like_users.push(response.data.data.id)
-                    console.log(response.data.data)
-                        this.matchingUser = response.data.data
+                        console.log(response)
+                        this.like_users.push(response.data.user.id)
+                        console.log(response.data.user)
+                        if (response.data.meta && response.data.meta.matching) {
+                            this.matchingUser = response.data.user
+                        }
 
                 }, (error) => {
                     console.log(error);
