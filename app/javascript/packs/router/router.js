@@ -6,6 +6,7 @@ import About from '@/components/About.vue'
 import Contact from '@/components/Contact.vue'
 import LoginView from '@/components/templates/LoginView.vue'
 import LoginDevelopmentView from '@/components/templates/LoginDevelopmentView.vue'
+import ChatroomIndexView from '@/components/templates/ChatroomIndexView.vue'
 import ChatroomView from '@/components/templates/ChatroomView.vue'
 
 Vue.use(Router)
@@ -26,8 +27,13 @@ const router = new Router({
         },
         {
             path: '/chatrooms',
-            component: ChatroomView
-        }
+            component: ChatroomIndexView
+        },
+        {
+            path: '/chatrooms/:id',
+            name: 'chatroom',
+            component: ChatroomView,
+        },
     ],
 })
 

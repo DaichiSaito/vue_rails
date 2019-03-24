@@ -1,32 +1,17 @@
 <template>
   <v-layout row>
     <v-flex xs12 sm6 offset-sm3>
-      <v-card>
+      <div>
+        <ul>
+          <li v-for="(message, index) in messages" :key="message.id">
 
-        <v-list subheader>
-          <v-subheader>Recent chat</v-subheader>
-          <v-list-tile
-                  v-for="chatroom in chatrooms"
-                  :key="chatroom.id"
-                  avatar
-                  @click=""
-          >
-            <v-list-tile-avatar>
-              <img :src="chatroom.avatar ? chatorom.avatar : 'https://cdn.vuetifyjs.com/images/lists/3.jpg'">
-            </v-list-tile-avatar>
-
-            <v-list-tile-content>
-              <v-list-tile-title v-html="chatroom_member_other_than_me(chatroom)"></v-list-tile-title>
-            </v-list-tile-content>
-
-            <v-list-tile-action>
-              <v-icon :color="chatroom.active ? 'teal' : 'grey'">chat_bubble</v-icon>
-            </v-list-tile-action>
-          </v-list-tile>
-        </v-list>
-
-        <v-divider></v-divider>
-      </v-card>
+          </li>
+        </ul>
+        <div>
+          <input type="text" v-model="newMessage">
+          <input type="button" @click="post" value="投稿">
+        </div>
+      </div>
     </v-flex>
   </v-layout>
 </template>
@@ -34,47 +19,39 @@
 <script>
     import axios from 'axios'
     export default {
-        mounted() {
-          this.fetchChatrooms()
-            console.log(JSON.parse(localStorage.getItem('currentUser')))
-        },
         data () {
             return {
-                chatrooms: [],
                 items: [
-                    { active: true, title: 'Jason Oner', avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg' },
-                    { active: true, title: 'Ranee Carlson', avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg' },
-                    { title: 'Cindy Baker', avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg' },
-                    { title: 'Ali Connors', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' }
+                    { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Photos', subtitle: 'Jan 9, 2014' },
+                    { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Recipes', subtitle: 'Jan 17, 2014' },
+                    { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Work', subtitle: 'Jan 28, 2014' }
                 ],
                 items2: [
-                    { title: 'Travis Howard', avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg' }
+                    { icon: 'assignment', iconClass: 'blue white--text', title: 'Vacation itinerary', subtitle: 'Jan 20, 2014' },
+                    { icon: 'call_to_action', iconClass: 'amber white--text', title: 'Kitchen remodel', subtitle: 'Jan 10, 2014' }
                 ],
-                chat_targets: []
-            }
-        },
-        computed: {
-            chatroom_member_other_than_me: function() {
-                self = this
-                return function(chatroom) {
-                    return chatroom.users.filter(user => user.id != JSON.parse(localStorage.getItem('currentUser')).id).map(user => user.name).join(',')
-                }
+                messages: [],
+                newMessage: null
             }
         },
         methods: {
-            fetchChatrooms() {
-                axios.get('/api/v1/chatrooms', {
-                    headers: {
-                        Authorization:
-                            "Bearer " + localStorage.getItem('accesstoken')
-                    }
-                }).then(response => {
-                    console.log(response)
-                    response.data.chatrooms.forEach(chatroom => {
-                      console.log(chatroom)
-                      this.chatrooms.push(chatroom)
-                    })
-                })
+            post() {
+              const message = {
+                message: {
+                  user_id: JSON.parse(localStorage.getItem('currentUser')).id,
+                  chatroom_id: this.$route.params.id,
+                  body: this.newMessage
+                }
+              }
+
+              axios.post('/api/v1/messages', message, {
+                  headers: {
+                      Authorization:
+                          "Bearer " + localStorage.getItem('accesstoken')
+                  }
+              }).then(response => {
+                  console.log(response)
+              })
             }
         }
     }

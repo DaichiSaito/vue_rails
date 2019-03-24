@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :be_liked_users, through: :passive_likes, source: :from
   has_many :chatroom_users, dependent: :destroy
   has_many :chatrooms, through: :chatroom_users
+  has_many :messages, dependent: :destroy
 
   # ユーザーをいいねする
   def like(other_user)

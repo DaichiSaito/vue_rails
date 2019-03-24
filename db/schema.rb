@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_23_044543) do
+ActiveRecord::Schema.define(version: 2019_03_24_065234) do
 
   create_table "authentications", force: :cascade do |t|
     t.integer "user_id"
@@ -46,6 +46,16 @@ ActiveRecord::Schema.define(version: 2019_03_23_044543) do
     t.index ["from_id", "to_id"], name: "index_likes_on_from_id_and_to_id", unique: true
     t.index ["from_id"], name: "index_likes_on_from_id"
     t.index ["to_id"], name: "index_likes_on_to_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "chatroom_id"
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chatroom_id"], name: "index_messages_on_chatroom_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "tasks", force: :cascade do |t|
