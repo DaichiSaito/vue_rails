@@ -6,7 +6,10 @@ import App from '../app.vue'
 import firebase from 'firebase'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
+// import ActionCable from 'actioncable';
 Vue.use(Vuetify)
+// const cable = ActionCable.createConsumer('ws:localhost:5000/cable');
+// Vue.prototype.$cable = cable;
 
 var config = {
     apiKey: "AIzaSyDSxKIfSVPa-r2Vo2C3Mlq7YX_s6I29vOs",

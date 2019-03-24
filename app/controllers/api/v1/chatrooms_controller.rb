@@ -9,4 +9,9 @@ class Api::V1::ChatroomsController < ApplicationController
     chatrooms = current_user.chatrooms.includes(:users)
     render json: chatrooms,  adapter: :json
   end
+
+  # def show
+  #   chatroom = current_user.chatrooms.find(params[:id])
+  #   render json: chatroom,  adapter: :json
+  # end
 end

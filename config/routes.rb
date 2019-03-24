@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: 'home#index'
+  mount ActionCable.server => '/cable'
   get '/about', to: 'home#index'
   get '/contact', to: 'home#index'
   get '/login', to: 'home#index'
@@ -8,11 +9,14 @@ Rails.application.routes.draw do
   get '/login_as/:user_id', to: 'development/sessions#login_as'
   get '/chatrooms', to: 'home#index'
   get '/chatrooms/:id', to: 'home#index'
+  # get '/chatrooms/:chatroom_id/messages', to: 'home#index'
   namespace :api, format: 'json' do
     namespace :v1 do
       resources :likes, only: [:create]
-      resources :chatrooms, only: [:index]
-      resources :messages, only: [:create]
+      resources :chatrooms, only: [:index] do
+        resources :messages, only: [:index, :create]
+      end
+
       resources :users, only: [:index] do
         collection do
           get :like_users, :be_liked_users, :matching_users

@@ -4,12 +4,13 @@
       <div>
         <ul>
           <li v-for="(message, index) in messages" :key="message.id">
-
+            <p v-if="message.user.id == currentUser.id">{{ message.body }} {{ message.user.name }} </p>
+            <p v-else>{{ message.user.name }} {{ message.body }}</p>
           </li>
         </ul>
         <div>
           <input type="text" v-model="newMessage">
-          <input type="button" @click="post" value="投稿">
+          <input type="button" @click="speak" value="投稿">
         </div>
       </div>
     </v-flex>
@@ -18,6 +19,7 @@
 
 <script>
     import axios from 'axios'
+    import ActionCable from 'actioncable'
     export default {
         data () {
             return {
@@ -31,10 +33,30 @@
                     { icon: 'call_to_action', iconClass: 'amber white--text', title: 'Kitchen remodel', subtitle: 'Jan 10, 2014' }
                 ],
                 messages: [],
-                newMessage: null
+                newMessage: null,
+                room: null
             }
         },
+        computed: {
+          currentUser: function() {
+              return JSON.parse(localStorage.getItem('currentUser'))
+          }
+        },
         methods: {
+            fetchMessages() {
+                axios.get(`/api/v1/chatrooms/${this.$route.params.id}/messages`, {
+                    headers: {
+                        Authorization:
+                            "Bearer " + localStorage.getItem('accesstoken')
+                    }
+                }).then(response => {
+                    console.log(response)
+                    response.data.messages.forEach(message => {
+                        console.log(message)
+                        this.messages.push(message)
+                    })
+                })
+            },
             post() {
               const message = {
                 message: {
@@ -52,7 +74,45 @@
               }).then(response => {
                   console.log(response)
               })
+            },
+            speak() {
+                this.room.perform('speak', {
+                    room_id: this.$route.params.id,
+                    user_id: JSON.parse(localStorage.getItem('currentUser')).id,
+                    message: this.newMessage,
+                });
+                this.newMessage = ''
             }
-        }
+        },
+        created() {
+            this.fetchMessages()
+
+            let accesstoken = localStorage.getItem('accesstoken')
+            this.room = ActionCable.createConsumer('ws:localhost:5000/cable/?accesstoken=' + accesstoken).subscriptions.create(
+                {
+                    channel: "RoomChannel", room_id: this.$route.params.id
+                },
+                {
+                    connected: function() {
+                        // Called when the subscription is ready for use on the server
+                        console.log("connected")
+                    },
+
+                    disconnected: function() {
+                        // Called when the subscription has been terminated by the server
+                        console.log("disconnected")
+                    },
+                    received: (data) => {
+                        console.log("received")
+                        console.log(data)
+                        const message = {
+                            body: data['body'],
+                            user: data['user']
+                        }
+                        this.messages.push(data)
+                    },
+                }
+            )
+        },
     }
 </script>
