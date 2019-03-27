@@ -1,6 +1,20 @@
 <template>
     <v-tabs id="tab" fixed-tabs>
         <v-tab to="/">ユーザ</v-tab>
+        <v-tab to="/liked_by">
+            <v-badge color="red">
+                <template v-slot:badge v-if="unreadNotification">
+                    <span>!</span>
+                </template>
+
+                <v-icon
+
+                        color="grey"
+                >
+                    mail
+                </v-icon>
+            </v-badge>
+        </v-tab>
         <v-tab to="/chatrooms">
             <v-badge color="red">
                 <template v-slot:badge v-if="unreadNotification">

@@ -8,6 +8,7 @@ import LoginView from '@/components/templates/LoginView.vue'
 import LoginDevelopmentView from '@/components/templates/LoginDevelopmentView.vue'
 import ChatroomIndexView from '@/components/templates/ChatroomIndexView.vue'
 import ChatroomView from '@/components/templates/ChatroomView.vue'
+import LikedUsersView from '@/components/templates/LikedUsersView.vue'
 
 Vue.use(Router)
 
@@ -33,6 +34,11 @@ const router = new Router({
             path: '/chatrooms/:id',
             name: 'chatroom',
             component: ChatroomView,
+        },
+        {
+            path: '/liked_by',
+            name: 'liked_by',
+            component: LikedUsersView,
         },
     ],
 })

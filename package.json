@@ -10,6 +10,7 @@
     "vue-loader": "^15.7.0",
     "vue-router": "^3.0.2",
     "vue-template-compiler": "^2.6.10",
+    "vue-tinder": "^1.1.1",
     "vuetify": "^1.5.7"
   },
   "devDependencies": {

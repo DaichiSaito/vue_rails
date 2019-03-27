@@ -9,9 +9,11 @@ Rails.application.routes.draw do
   get '/login_as/:user_id', to: 'development/sessions#login_as'
   get '/chatrooms', to: 'home#index'
   get '/chatrooms/:id', to: 'home#index'
+  get '/liked_by', to: 'home#index'
   # get '/chatrooms/:chatroom_id/messages', to: 'home#index'
   namespace :api, format: 'json' do
     namespace :v1 do
+      get 'unread_liked', to: 'liked_users#index'
       resources :likes, only: [:create]
       resources :chatrooms, only: [:index] do
         resources :messages, only: [:index, :create], module: :chatrooms

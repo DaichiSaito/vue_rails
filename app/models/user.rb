@@ -12,6 +12,8 @@ class User < ApplicationRecord
   has_many :chatrooms, through: :chatroom_users
   has_many :messages, dependent: :destroy
 
+  scope :not_read_like, -> { merge(Like.where(read_at: nil)) }
+
   # ユーザーをいいねする
   def like(other_user)
     like_users << other_user

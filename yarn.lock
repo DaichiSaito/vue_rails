@@ -6110,6 +6110,10 @@ vue-template-es2015-compiler@^1.9.0:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
 
+vue-tinder@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/vue-tinder/-/vue-tinder-1.1.1.tgz#5d37fc8b9b1db0a73612fcaed9ec327ce9665105"
+
 vue@^2.6.10:
   version "2.6.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
