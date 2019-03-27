@@ -56,25 +56,54 @@
     <v-content>
       <v-container fluid fill-height>
         <v-fade-transition mode="out-in">
-          <router-view></router-view>
+          <router-view v-on:fetchUnread="fetchUnread()"></router-view>
         </v-fade-transition>
       </v-container>
     </v-content>
-    <Tab/>
+    <Tab v-bind:unread-notification="unreadNotification"/>
   </v-app>
 </template>
 
 <script>
     import Tab from './packs/components/molecules/Tab'
+    import { Read } from '@/api'
     export default {
         name: "app",
         data() {
             return {
-                navBar: false
+                navBar: false,
+                unreadNotification: false
             }
         },
         components: {
             Tab
+        },
+        methods: {
+            addUnread: function() {
+                console.log("addUnread")
+                this.unreadNotification = true
+            },
+            removeUnread: function() {
+                console.log("removeUnread")
+                this.unreadNotification = false
+            },
+            fetchUnread() {
+                self = this
+                Read.fetchUnreadMessages().then(response => {
+                    if (response.has_unread) {
+                        console.log('未読あり')
+                        // self.$emit('addUnread')
+                        this.unreadNotification = true
+                    } else {
+                        console.log('未読なし')
+                        // self.$emit('removeUnread')
+                        this.unreadNotification = false
+                    }
+                })
+            }
+        },
+        watch: {
+            '$route': 'fetchUnread'
         }
     };
 </script>

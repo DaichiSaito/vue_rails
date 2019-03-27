@@ -33,10 +33,10 @@
 
 <script>
     import axios from 'axios'
+    import { Read } from '@/api'
     export default {
         mounted() {
-          this.fetchChatrooms()
-            console.log(JSON.parse(localStorage.getItem('currentUser')))
+            this.fetchChatrooms()
         },
         data () {
             return {
@@ -81,7 +81,7 @@
                     name: "chatroom",
                     params: { id: chatroomId }
                 });
-            }
+            },
         }
     }
 </script>

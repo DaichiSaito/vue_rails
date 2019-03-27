@@ -46,6 +46,7 @@
 <script>
     import axios from 'axios'
     import Dialog from '@/components/organisms/Dialog.vue'
+    import { Read } from '@/api'
     // import 'profile-placeholder.png'
     export default {
         data() {
@@ -64,6 +65,7 @@
         mounted() {
             this.fetchLikeUser()
             this.fetchUser()
+            this.fetchUnread()
         },
         computed: {
           liking: function() {
@@ -150,6 +152,20 @@
             },
             closeModal() {
                 this.matchingUser = null
+            },
+            fetchUnread() {
+                self = this
+                Read.fetchUnreadMessages().then(response => {
+                    console.log("aadsafdsafdasfa")
+                    console.log(response)
+                    if (response.has_unread) {
+                        console.log('addUnreadだよ')
+                        self.$emit('addUnread')
+                    } else {
+                        console.log('removeUnreadだよ')
+                        self.$emit('removeUnread')
+                    }
+                })
             }
         }
     }

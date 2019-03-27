@@ -14,7 +14,13 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :likes, only: [:create]
       resources :chatrooms, only: [:index] do
-        resources :messages, only: [:index, :create]
+        resources :messages, only: [:index, :create], module: :chatrooms
+      end
+
+      resources :messages, only: [:index, :create] do
+        collection do
+          get :unread
+        end
       end
 
       resources :users, only: [:index] do

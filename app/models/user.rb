@@ -26,4 +26,10 @@ class User < ApplicationRecord
   def liking?(other_user)
     like_users.include?(other_user)
   end
+
+  def has_unread_messages?
+    # メッセージをしていない相手がいたら または
+    # 未読があったら
+    chatrooms.without_messages.exists? || chatrooms.unread.exists?
+  end
 end

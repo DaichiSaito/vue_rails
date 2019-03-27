@@ -20,6 +20,7 @@
 <script>
     import axios from 'axios'
     import ActionCable from 'actioncable'
+    import { Read } from '@/api'
     export default {
         data () {
             return {
@@ -44,6 +45,7 @@
         },
         methods: {
             fetchMessages() {
+                self = this
                 axios.get(`/api/v1/chatrooms/${this.$route.params.id}/messages`, {
                     headers: {
                         Authorization:
@@ -55,6 +57,7 @@
                         console.log(message)
                         this.messages.push(message)
                     })
+                    self.$emit('fetchUnread')
                 })
             },
             post() {
@@ -82,10 +85,12 @@
                     message: this.newMessage,
                 });
                 this.newMessage = ''
-            }
+            },
+
         },
         created() {
             this.fetchMessages()
+
 
             let accesstoken = localStorage.getItem('accesstoken')
             this.room = ActionCable.createConsumer('ws:localhost:5000/cable/?accesstoken=' + accesstoken).subscriptions.create(
