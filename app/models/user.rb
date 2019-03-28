@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :chatroom_users, dependent: :destroy
   has_many :chatrooms, through: :chatroom_users
   has_many :messages, dependent: :destroy
+  belongs_to_active_hash :age, shortcuts: [:name]
 
   scope :not_read_like, -> { merge(Like.where(read_at: nil)) }
 

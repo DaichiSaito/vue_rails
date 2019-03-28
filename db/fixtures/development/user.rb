@@ -2,6 +2,6 @@
   User.create(
       name: Faker::Name.name,
       email: Faker::Internet.email,
-      age: [*18..29].sample
+      age_id: Age.all.sample.id
   )
 end

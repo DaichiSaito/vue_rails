@@ -69,9 +69,10 @@ ActiveRecord::Schema.define(version: 2019_03_24_142202) do
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "name", null: false
-    t.integer "age"
+    t.integer "age_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["age_id"], name: "index_users_on_age_id"
   end
 
 end

@@ -10,10 +10,14 @@ Rails.application.routes.draw do
   get '/chatrooms', to: 'home#index'
   get '/chatrooms/:id', to: 'home#index'
   get '/liked_by', to: 'home#index'
+  get '/mypage', to: 'home#index'
+  get '/mypage/edit', to: 'home#index'
   # get '/chatrooms/:chatroom_id/messages', to: 'home#index'
   namespace :api, format: 'json' do
     namespace :v1 do
       get 'unread_liked', to: 'liked_users#index'
+      resource :profile, only: [:update]
+      resources :ages, only: [:index]
       resources :likes, only: [:create]
       resources :chatrooms, only: [:index] do
         resources :messages, only: [:index, :create], module: :chatrooms

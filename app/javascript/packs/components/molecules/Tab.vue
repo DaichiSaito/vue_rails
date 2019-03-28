@@ -29,8 +29,7 @@
                 </v-icon>
             </v-badge>
         </v-tab>
-        <v-tab to="/about">About</v-tab>
-        <v-tab to="/contact">Contact</v-tab>
+        <v-tab to="/mypage">マイページ</v-tab>
     </v-tabs>
 </template>
 <script>
