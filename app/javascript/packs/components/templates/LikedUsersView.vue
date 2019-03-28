@@ -2,11 +2,11 @@
   <div>
     <tinder
             ref="tinder"
+            :allow-super="false"
             :queue.sync="queue"
             @submit="submit">
       <template slot-scope="{data}">
         <!--<div-->
-                <!--@click="click"-->
                 <!--class="pic"-->
                 <!--:style="`background-image:url(https://picsum.photos/710/1152/?random=${data.key})`">-->
         <!--</div>-->
@@ -24,9 +24,9 @@
     </tinder>
     <div class="btns">
       <img src="https://johnnydan.oss-cn-beijing.aliyuncs.com/vue-tinder/nope.png" @click="decide('nope')">
-      <img src="https://johnnydan.oss-cn-beijing.aliyuncs.com/vue-tinder/super-like.png" @click="decide('super')">
       <img src="https://johnnydan.oss-cn-beijing.aliyuncs.com/vue-tinder/like.png" @click="decide('like')">
     </div>
+    <Dialog v-bind:matching-user="matchingUser" v-on:close="closeModal()"/>
   </div>
 </template>
 <script>
@@ -38,11 +38,13 @@
         data() {
             return {
                 user: Object,
-                queue: []
+                queue: [],
+                matchingUser: null
             }
         },
         components: {
-          tinder
+            tinder,
+            Dialog
         },
         mounted() {
           this.fetchLikedBy()
@@ -78,26 +80,6 @@
                     console.log(error)
                 })
             },
-            like(userId) {
-
-                axios.post('/api/v1/likes',
-                    { to_id: userId },
-                    { headers: {
-                            Authorization:
-                                "Bearer " + localStorage.getItem('accesstoken')
-                        }
-                    }).then(response => {
-                    console.log(response)
-                    this.like_users.push(response.data.user.id)
-                    console.log(response.data.user)
-                    if (response.data.meta && response.data.meta.matching) {
-                        this.matchingUser = response.data.user
-                    }
-
-                }, (error) => {
-                    console.log(error);
-                });
-            },
             closeModal() {
                 this.matchingUser = null
             },
@@ -114,11 +96,36 @@
                 this.$refs.tinder.decide(choice)
             },
 
+            like(userId) {
+
+                self = this
+
+                axios.post('/api/v1/likes',
+                    { to_id: userId },
+                    { headers: {
+                            Authorization:
+                                "Bearer " + localStorage.getItem('accesstoken')
+                        }
+                    }).then(response => {
+                    console.log("いいねしたよ！")
+                    if (response.data.meta && response.data.meta.matching) {
+                        self.matchingUser = response.data.user
+                        this.$emit('fetchUnread')
+                    }
+
+                }, (error) => {
+                    console.log(error);
+                });
+            },
+
             submit (choice) {
-                switch (choice) {
+                console.log(choice)
+                switch (choice.type) {
                     case 'nope': // 左滑
                         break;
                     case 'like': // 右滑
+                        console.log(choice.item.user.id)
+                        this.like(choice.item.user.id)
                         break;
                     case 'super': // 上滑
                         break;
@@ -127,9 +134,9 @@
                     // this.fetchLikedBy()
                 }
             },
-            click() {
-                alert('click')
-            }
+            closeModal() {
+                this.matchingUser = null
+            },
         }
     }
 </script>
