@@ -35,7 +35,8 @@
                 ],
                 messages: [],
                 newMessage: null,
-                room: null
+                room: null,
+                lastReadChannel: null
             }
         },
         computed: {
@@ -86,11 +87,36 @@
                 });
                 this.newMessage = ''
             },
+            lastReadUpdate() {
+              this.lastReadChannel.perform('update', {
+                  chatroom_id: this.$route.params.id
+              })
+            },
+            subscribeLastRead() {
+                let accesstoken = localStorage.getItem('accesstoken')
+                this.lastReadChannel = ActionCable.createConsumer(`ws:localhost:5000/cable/?accesstoken=${accesstoken}`)
+                    .subscriptions.create(
+                        {
+                            channel: 'LastReadChannel'
+                        },
+                        {
+                            connected: () => {
+                                console.log("last read channel connected")
+                            },
+                            disconnected: () => {
+                                console.log("last read channel disconnected")
+                            },
+                            received: () => {
+                                console.log("last read channel received")
+                            }
+                        }
+                    )
+            }
 
         },
         created() {
             this.fetchMessages()
-
+            this.subscribeLastRead()
 
             let accesstoken = localStorage.getItem('accesstoken')
             this.room = ActionCable.createConsumer('ws:localhost:5000/cable/?accesstoken=' + accesstoken).subscriptions.create(
@@ -115,6 +141,7 @@
                             user: data['user']
                         }
                         this.messages.push(data)
+                        this.lastReadUpdate()
                     },
                 }
             )
