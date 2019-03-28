@@ -65,17 +65,19 @@
         mounted() {
             this.fetchLikeUser()
             this.fetchUser()
-            this.fetchUnread()
         },
         computed: {
-          liking: function() {
-              self = this
-              return function(userId) {
-                  return self.like_users.includes(userId)
-              }
-          }
+          // liking: function() {
+          //     self = this
+          //     return function(userId) {
+          //         return self.like_users.includes(userId)
+          //     }
+          // }
         },
         methods: {
+            liking(userId) {
+                return this.like_users.includes(userId)
+            },
             fetch() {
                 axios.get('/api/v1/tasks').then(response => {
                     // console.log(response)
@@ -88,17 +90,15 @@
                 })
             },
             fetchLikeUser() {
+                self = this
                 axios.get('/api/v1/users/like_users', {
                     headers: {
                         Authorization:
                             "Bearer " + localStorage.getItem('accesstoken')
                     }
                 }).then(response => {
-                    console.log(response)
                     response.data.users.forEach(like_user => {
-                        console.log(like_user.id.toString())
-                        const id = like_user.id.toString()
-                        this.like_users.push(like_user.id)
+                        self.like_users.push(like_user.id)
                         // this.like_users[id] = true
                         // this.like_users.push(user)
                         // this.like_users.push( { [id]: true } )
@@ -111,7 +111,7 @@
                     response.data.users.forEach (user => {
                         // console.log(user)
                         // this.like_users[user.id.toString()] = false
-                        console.log(user.id)
+                        // console.log(user.id)
                         this.users.unshift(user)
 
 
@@ -132,6 +132,8 @@
             },
             like(userId) {
 
+                self = this
+
                 axios.post('/api/v1/likes',
                     { to_id: userId },
                     { headers: {
@@ -139,11 +141,13 @@
                             "Bearer " + localStorage.getItem('accesstoken')
                     }
                     }).then(response => {
-                        console.log(response)
-                        this.like_users.push(response.data.user.id)
+                        console.log("いいねしたよ！")
+                        console.log(response.data.user.id)
+                        self.like_users.push(response.data.user.id)
                         console.log(response.data.user)
                         if (response.data.meta && response.data.meta.matching) {
-                            this.matchingUser = response.data.user
+                            self.matchingUser = response.data.user
+                            this.$emit('fetchUnread')
                         }
 
                 }, (error) => {
@@ -153,20 +157,6 @@
             closeModal() {
                 this.matchingUser = null
             },
-            fetchUnread() {
-                self = this
-                Read.fetchUnreadMessages().then(response => {
-                    console.log("aadsafdsafdasfa")
-                    console.log(response)
-                    if (response.has_unread) {
-                        console.log('addUnreadだよ')
-                        self.$emit('addUnread')
-                    } else {
-                        console.log('removeUnreadだよ')
-                        self.$emit('removeUnread')
-                    }
-                })
-            }
         }
     }
 </script>

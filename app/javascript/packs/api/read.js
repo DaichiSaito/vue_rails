@@ -13,5 +13,20 @@ export default {
                 reject(new Error(err.response.data.message || err.message))
             })
         })
+    },
+
+    fetchUnreadLikes: () => {
+        return new Promise((resolve, reject) => {
+            axios.get(`/api/v1/unread_liked`, {
+                headers: {
+                    Authorization:
+                        "Bearer " + localStorage.getItem('accesstoken')
+                }
+            }).then(response => {
+                resolve(response.data)
+            }).catch(err => {
+                reject(new Error(err.response.data.message || err.message))
+            })
+        })
     }
 }

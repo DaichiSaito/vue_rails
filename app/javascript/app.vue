@@ -60,7 +60,7 @@
         </v-fade-transition>
       </v-container>
     </v-content>
-    <Tab v-bind:unread-notification="unreadNotification"/>
+    <Tab v-bind:unread-notification="unreadNotification" v-bind:unread-like="unreadLike"/>
   </v-app>
 </template>
 
@@ -72,7 +72,8 @@
         data() {
             return {
                 navBar: false,
-                unreadNotification: false
+                unreadNotification: false,
+                unreadLike: false
             }
         },
         components: {
@@ -87,7 +88,7 @@
                 console.log("removeUnread")
                 this.unreadNotification = false
             },
-            fetchUnread() {
+            fetchUnreadMessages() {
                 self = this
                 Read.fetchUnreadMessages().then(response => {
                     if (response.has_unread) {
@@ -100,6 +101,21 @@
                         this.unreadNotification = false
                     }
                 })
+            },
+            fetchUnreadLikes() {
+                self = this
+                Read.fetchUnreadLikes().then(response => {
+                    if(response.users.length > 0) {
+                        this.unreadLike = true
+                    } else {
+                        this.unreadLike = false
+                    }
+                })
+            },
+            fetchUnread() {
+                this.fetchUnreadLikes()
+                this.fetchUnreadMessages()
+
             }
         },
         watch: {

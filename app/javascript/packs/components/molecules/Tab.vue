@@ -3,7 +3,7 @@
         <v-tab to="/">ユーザ</v-tab>
         <v-tab to="/liked_by">
             <v-badge color="red">
-                <template v-slot:badge v-if="unreadNotification">
+                <template v-slot:badge v-if="unreadLike">
                     <span>!</span>
                 </template>
 
@@ -38,6 +38,9 @@
         name: 'tab',
         props: {
             unreadNotification: {
+                type: Boolean
+            },
+            unreadLike: {
                 type: Boolean
             }
         }
