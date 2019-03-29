@@ -1,12 +1,13 @@
 <template>
   <div>
-    <ImageCropPage />
+    <!--<ImageCropPage />-->
+    <CropperModal :imgSrc="imgSrc" v-on:close="closeModal()" />
     <v-form
             ref="form"
             v-model="valid"
             lazy-validation
     >
-      <input type="file" v-on:change="onFileChange()">
+      <input type="file" v-on:change="onFileChange($event, 1)">
       <v-text-field
               v-model="user.name"
               :counter="10"
@@ -77,6 +78,7 @@
 <script>
     import axios from 'axios'
     import ImageCropPage from '@/components/organisms/ImageCropPage.vue'
+    import CropperModal from '@/components/organisms/CropperModal.vue'
     export default {
         data: () => ({
             valid: true,
@@ -98,10 +100,12 @@
                 { id: 4, name: 'Item4' },
             ],
             checkbox: false,
-            user: {}
+            user: {},
+            imgSrc: null
         }),
         components: {
-            ImageCropPage
+            ImageCropPage,
+            CropperModal
         },
         mounted() {
             let user = JSON.parse(localStorage.getItem('currentUser'))
@@ -183,20 +187,36 @@
                     console.log(error)
                 })
             },
-            onFileChange() {
-                // self = this
-                // let file = event.target.files[0] || event.dataTransfer.files
-                // let reader = new FileReader()
-                // reader.onload = () => {
-                //     // console.log(event.target.result)
-                //     self.uploadAvatar(event.target.result)
-                //     // this.uploadedImage = event.target.result
-                //     // this.post.image = this.uploadedImage
-                // }
-                // reader.readAsDataURL(file)
+            onFileChange(e, num) {
 
-                let files = event.target.files;
-                this.uploadAvatar(files[0])
+
+                var file = e.target.files[0];
+                if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(e.target.value)) {
+                    alert(".gif,jpeg,jpg,png,bmpファイルしかアップロードできません。");
+                    return false;
+                }
+                var reader = new FileReader();
+                reader.onload = e => {
+                    let data;
+                    if (typeof e.target.result === "object") {
+                        // 把Array Buffer转化为blob 如果是base64不需要
+                        data = window.URL.createObjectURL(new Blob([e.target.result]));
+                    } else {
+                        data = e.target.result;
+                    }
+                    if (num === 1) {
+                        this.imgSrc = data;
+                    } else if (num === 2) {
+                        this.example2.img = data;
+                    }
+                };
+                // 转化为base64
+                // reader.readAsDataURL(file)
+                // 转化为blob
+                reader.readAsArrayBuffer(file);
+            },
+            closeModal() {
+                this.imgSrc = null
             }
         }
     }

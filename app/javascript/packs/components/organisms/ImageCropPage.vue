@@ -36,6 +36,7 @@
 
 <script>
     import { VueCropper } from "vue-cropper";
+
     // import { VueCropper } from '../test'
 
     // import codes from "./code";
