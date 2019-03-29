@@ -16,7 +16,9 @@ Rails.application.routes.draw do
   namespace :api, format: 'json' do
     namespace :v1 do
       get 'unread_liked', to: 'liked_users#index'
-      resource :profile, only: [:update]
+      resource :profile, only: [:update] do
+        patch :avatar
+      end
       resources :ages, only: [:index]
       resources :likes, only: [:create]
       resources :chatrooms, only: [:index] do

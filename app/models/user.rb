@@ -14,6 +14,7 @@ class User < ApplicationRecord
   belongs_to_active_hash :age, shortcuts: [:name]
 
   scope :not_read_like, -> { merge(Like.where(read_at: nil)) }
+  mount_uploader :avatar, AvatarUploader
 
   # ユーザーをいいねする
   def like(other_user)

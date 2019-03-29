@@ -15,7 +15,7 @@
             <v-card>
                 <v-img
                         class="white--text"
-                        :src="require('@/assets/profile-placeholder.png')"
+                        :src="user.avatar ? user.avatar : require('@/assets/profile-placeholder.png')"
                 >
                     <v-container fill-height fluid>
                         <v-layout fill-height>

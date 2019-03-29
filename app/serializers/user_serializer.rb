@@ -7,5 +7,9 @@
 
 
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :name, :age_id
+  attributes :id, :name, :age_id, :avatar
+
+  def avatar
+    object.avatar.url
+  end
 end

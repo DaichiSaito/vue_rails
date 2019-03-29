@@ -4,6 +4,7 @@
           v-model="valid"
           lazy-validation
   >
+    <input type="file" v-on:change="onFileChange()">
     <v-text-field
             v-model="user.name"
             :counter="10"
@@ -156,6 +157,38 @@
                     console.log(error)
                 })
 
+            },
+            uploadAvatar(data) {
+                let formData = new FormData();
+                formData.append('avatar', data);
+                axios.patch('/api/v1/profile/avatar',
+                    formData,
+                    {
+                        headers: {
+                            Authorization:
+                                "Bearer " + localStorage.getItem('accesstoken'),
+                            'content-type': 'multipart/form-data'
+                        }
+                    }).then(response => {
+                    localStorage.setItem('currentUser', JSON.stringify(response.data.user));
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
+            onFileChange() {
+                // self = this
+                // let file = event.target.files[0] || event.dataTransfer.files
+                // let reader = new FileReader()
+                // reader.onload = () => {
+                //     // console.log(event.target.result)
+                //     self.uploadAvatar(event.target.result)
+                //     // this.uploadedImage = event.target.result
+                //     // this.post.image = this.uploadedImage
+                // }
+                // reader.readAsDataURL(file)
+
+                let files = event.target.files;
+                this.uploadAvatar(files[0])
             }
         }
     }
