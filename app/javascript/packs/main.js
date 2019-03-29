@@ -41,5 +41,4 @@ document.addEventListener('DOMContentLoaded', () => {
         router,
         render: h => h(App)
     }).$mount('#app')
-    console.log("aaaa")
 })

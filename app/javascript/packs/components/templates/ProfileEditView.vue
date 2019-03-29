@@ -1,77 +1,82 @@
 <template>
-  <v-form
-          ref="form"
-          v-model="valid"
-          lazy-validation
-  >
-    <input type="file" v-on:change="onFileChange()">
-    <v-text-field
-            v-model="user.name"
-            :counter="10"
-            :rules="nameRules"
-            label="Name"
-            required
-    ></v-text-field>
-
-    <v-text-field
-            v-model="email"
-            :rules="emailRules"
-            label="E-mail"
-            required
-    ></v-text-field>
-
-    <v-select
-            v-model="select"
-            :items="items"
-            item-text="name"
-            item-value="id"
-            :rules="[v => !!v || 'Item is required']"
-            label="Item"
-            required
-            return-object
-    ></v-select>
-
-    <v-checkbox
-            v-model="checkbox"
-            :rules="[v => !!v || 'You must agree to continue!']"
-            label="Do you agree?"
-            required
-    ></v-checkbox>
-
-    <v-btn
-            :disabled="!valid"
-            color="success"
-            @click="validate"
+  <div>
+    <ImageCropPage />
+    <v-form
+            ref="form"
+            v-model="valid"
+            lazy-validation
     >
-      Validate
-    </v-btn>
+      <input type="file" v-on:change="onFileChange()">
+      <v-text-field
+              v-model="user.name"
+              :counter="10"
+              :rules="nameRules"
+              label="Name"
+              required
+      ></v-text-field>
 
-    <v-btn
-            :disabled="!valid"
-            color="success"
-            @click="updateProfile"
-    >
-      プロフィールを更新
-    </v-btn>
+      <v-text-field
+              v-model="email"
+              :rules="emailRules"
+              label="E-mail"
+              required
+      ></v-text-field>
 
-    <v-btn
-            color="error"
-            @click="reset"
-    >
-      Reset Form
-    </v-btn>
+      <v-select
+              v-model="select"
+              :items="items"
+              item-text="name"
+              item-value="id"
+              :rules="[v => !!v || 'Item is required']"
+              label="Item"
+              required
+              return-object
+      ></v-select>
 
-    <v-btn
-            color="warning"
-            @click="resetValidation"
-    >
-      Reset Validation
-    </v-btn>
-  </v-form>
+      <v-checkbox
+              v-model="checkbox"
+              :rules="[v => !!v || 'You must agree to continue!']"
+              label="Do you agree?"
+              required
+      ></v-checkbox>
+
+      <v-btn
+              :disabled="!valid"
+              color="success"
+              @click="validate"
+      >
+        Validate
+      </v-btn>
+
+      <v-btn
+              :disabled="!valid"
+              color="success"
+              @click="updateProfile"
+      >
+        プロフィールを更新
+      </v-btn>
+
+      <v-btn
+              color="error"
+              @click="reset"
+      >
+        Reset Form
+      </v-btn>
+
+      <v-btn
+              color="warning"
+              @click="resetValidation"
+      >
+        Reset Validation
+      </v-btn>
+    </v-form>
+  </div>
+
 </template>
 
 <script>
     import axios from 'axios'
+    import ImageCropPage from '@/components/organisms/ImageCropPage.vue'
     export default {
         data: () => ({
             valid: true,
@@ -95,6 +100,9 @@
             checkbox: false,
             user: {}
         }),
+        components: {
+            ImageCropPage
+        },
         mounted() {
             let user = JSON.parse(localStorage.getItem('currentUser'))
             console.log("user")

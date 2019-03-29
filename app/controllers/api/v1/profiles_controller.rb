@@ -30,7 +30,7 @@ class Api::V1::ProfilesController < ApplicationController
 
   def user_avatar_params
     # p params[:avatar]
-    # params[:avatar].original_filename << '.jpg'
+    params[:avatar].original_filename << '.jpg'
     params.permit(:avatar)
   end
 end
