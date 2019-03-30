@@ -34,6 +34,6 @@ class User < ApplicationRecord
   def has_unread_messages?
     # メッセージをしていない相手がいたら または
     # 未読があったら
-    chatrooms.without_messages.exists? || chatrooms.unread.exists?
+    chatrooms.without_messages.exists? || chatrooms.unread.exists? || chatroom_users.unopened.exists?
   end
 end
