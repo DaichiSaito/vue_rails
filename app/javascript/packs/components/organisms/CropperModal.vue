@@ -104,7 +104,7 @@
         },
         methods: {
             close: function() {
-                this.$emit('close')
+                this.$emit('close', JSON.parse(localStorage.getItem('currentUser')))
             },
             down(type) {
                 self = this
@@ -112,7 +112,8 @@
                 // 输出
                 this.$refs.cropper.getCropBlob(data => {
                     let formData = new FormData();
-                    formData.append('avatar', data);
+                    let fileName = new Date().getTime()
+                    formData.append('avatar', data, fileName);
                     axios.patch('/api/v1/profile/avatar',
                         formData,
                         {

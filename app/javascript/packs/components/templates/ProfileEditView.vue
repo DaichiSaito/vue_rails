@@ -1,13 +1,14 @@
 <template>
   <div>
     <!--<ImageCropPage />-->
-    <CropperModal :imgSrc="imgSrc" v-on:close="closeModal()" />
+    <CropperModal :imgSrc="imgSrc" v-on:close="closeModal" />
     <v-form
             ref="form"
             v-model="valid"
             lazy-validation
     >
       <input type="file" v-on:change="onFileChange($event, 1)">
+      <v-img :src="user.avatar" aspect-ratio="1.7"></v-img>
       <v-text-field
               v-model="user.name"
               :counter="10"
@@ -215,8 +216,11 @@
                 // 转化为blob
                 reader.readAsArrayBuffer(file);
             },
-            closeModal() {
+            closeModal: function(user) {
                 this.imgSrc = null
+                console.log("userは")
+                console.log(user)
+                this.user = user
             }
         }
     }
